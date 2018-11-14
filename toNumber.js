@@ -1,4 +1,4 @@
-const toNumber = (x, customs = {}) => {
+function toNumber(x, customs = {}) {
 
   if (customs !== Object(customs)) // customs must be an object
     throw 'bad parameter.'
@@ -39,4 +39,4 @@ const toNumber = (x, customs = {}) => {
   return _.onSuccess(x);
 };
 
-export default toNumber;
+module.exports = {toNumber};
