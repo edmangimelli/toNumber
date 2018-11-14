@@ -28,8 +28,6 @@ toNumber(101, {numberConstraint: x => x < 100, onFail: x => {throw 'Whaaaa??'}})
 
 toNumber(55, {stringToNumber: /* redefine how it interprets strings */});
 
-toNumber(44, {stringToNumber: /* redefine how it converts strings */});
-
 toNumber(33, {isNumber: /* redefine how it defines a number */});
 
 
