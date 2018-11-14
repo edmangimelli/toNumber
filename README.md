@@ -28,4 +28,12 @@ toNumber(55, {stringToNumber: /* redefine how it interprets strings */})
 toNumber(44, {stringToNumber: /* redefine how it converts strings */})
 
 toNumber(33, {isNumber: /* redefine how it defines a number */})
+
+
+// an example of how you might actually use it
+
+number = x => toNumber(x, {onSuccess: x => x.toLocaleString(), onFail: x => ''})
+
+// i.e. just tweak it for your current needs (maybe even just the current scope )
+
 ```
