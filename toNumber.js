@@ -1,8 +1,8 @@
 function toNumber(x, customs = {}) {
 
   if (customs !== Object(customs)) // customs must be an object
-    throw 'bad parameter.'
-
+    throw 'bad parameter.';
+  
   
   const defaults = {
     onFail: x => null,
@@ -17,7 +17,7 @@ function toNumber(x, customs = {}) {
     isNumber: x => typeof(x) === 'number' && !Number.isNaN(x) && Number.isFinite(x),
 
     numberConstraint: x => x, 
-  }
+  };
 
   
   const _ = {...defaults, ...customs};
