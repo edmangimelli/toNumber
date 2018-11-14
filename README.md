@@ -10,30 +10,34 @@ toNumber('') // null
 toNumber('123abc') // null
 toNumber('$ 1 , 000 .  00') // 1000
 
+
+
 // instead of
-let n = toNumber('5000');
-let s = n && n.toLocaleString()
+const num = toNumber('5000');
+const str = n && n.toLocaleString();
 
 // you can write
-toNumber('5000', {onSuccess: x => x.toLocaleString()}) 
+const str = toNumber('5000', {onSuccess: x => x.toLocaleString()});
+
 
 
 // also
-toNumber('dog', {onFail: x => x}) // dog (instead of null)
+toNumber('dog', {onFail: x => x}); // dog (instead of null)
 
-toNumber(101, {numberConstraint: x => x < 100, onFail: x => {throw 'Whaaaa??'}})
+toNumber(101, {numberConstraint: x => x < 100, onFail: x => {throw 'Whaaaa??'}});
 
-toNumber(55, {stringToNumber: /* redefine how it interprets strings */})
+toNumber(55, {stringToNumber: /* redefine how it interprets strings */});
 
-toNumber(44, {stringToNumber: /* redefine how it converts strings */})
+toNumber(44, {stringToNumber: /* redefine how it converts strings */});
 
-toNumber(33, {isNumber: /* redefine how it defines a number */})
+toNumber(33, {isNumber: /* redefine how it defines a number */});
+
 
 
 // an example of how you might actually use it
 
-number = x => toNumber(x, {onSuccess: x => x.toLocaleString(), onFail: x => ''})
+number = x => toNumber(x, {onSuccess: x => x.toLocaleString(), onFail: x => ''});
 
-// i.e. just tweak it for your current needs (maybe even just the current scope )
+// i.e. just tweak it for your current needs (maybe even just the current scope)
 
 ```
