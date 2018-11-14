@@ -1,8 +1,9 @@
-export const toNumber = (x, customs = {}) => {
+export default const toNumber = (x, customs = {}) => {
 
-  if (customs !== Object(customs))
+  if (customs !== Object(customs)) // customs must be an object
     throw 'bad parameter.'
 
+  
   const defaults = {
     onFail: x => null,
 
@@ -18,11 +19,13 @@ export const toNumber = (x, customs = {}) => {
     numberConstraint: x => x, 
   }
 
+  
   const _ = {...defaults, ...customs};
 
-  if (Object.keys(_).length !== Object.keys(defaults).length)
+  if (Object.keys(_).length !== Object.keys(defaults).length) // catches typos
     throw 'bad parameter.'
 
+  
   switch (typeof x) {
   case 'string':
     x = _.stringToNumber(x);
