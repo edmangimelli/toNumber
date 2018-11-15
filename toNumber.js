@@ -16,7 +16,7 @@ function toNumber(x, customs = {}) {
 
     isNumber: x => typeof(x) === 'number' && !Number.isNaN(x) && Number.isFinite(x),
 
-    numberConstraint: x => x, 
+    numberConstraint: x => true, 
   };
 
   
