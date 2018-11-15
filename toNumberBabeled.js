@@ -30,7 +30,7 @@ function toNumber(x) {
     },
 
     numberConstraint: function numberConstraint(x) {
-      return x;
+      return true;
     }
   };
 
