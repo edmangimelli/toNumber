@@ -12,11 +12,11 @@ function toNumber(x) {
     throw 'bad parameter.';
 
   var defaults = {
-    onFail: function onFail(x) {
+    onFail: function onFail(originalX, x) {
       return null;
     },
 
-    onSuccess: function onSuccess(x) {
+    onSuccess: function onSuccess(x, originalX) {
       return x;
     },
 
@@ -39,16 +39,19 @@ function toNumber(x) {
   if (Object.keys(_).length !== Object.keys(defaults).length) // catches typos
     throw 'bad parameter.';
 
+  if (x === Object(x)) return _.onFail(x, x);
+
+  var originalX = x;
   switch (typeof x === 'undefined' ? 'undefined' : _typeof(x)) {
     case 'string':
       x = _.stringToNumber(x);
     case 'number':
       if (_.isNumber(x) && _.numberConstraint(x)) break;
     default:
-      return _.onFail(x);
+      return _.onFail(originalX, x);
   }
 
-  return _.onSuccess(x);
+  return _.onSuccess(x, originalX);
 };
 
 module.exports = { toNumber: toNumber };
