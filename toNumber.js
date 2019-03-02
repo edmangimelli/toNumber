@@ -1,47 +1,81 @@
-function toNumber(x, customs = {}) {
+function toNumber(x, customFuncs = {}) {
 
 
-  if (customs !== Object(customs)) // customs must be an object
+  if (customFuncs !== Object(customFuncs)) // customFuncs must be an object
     throw 'bad parameter.';
 
 
-  const defaults = {
-    onFail: (originalX, x) => null,
+  const defaultFuncs = {
 
-    onSuccess: (x, originalX) => x,
+   // in the below functions
+   //  x (the original value passed in to toNumber)
+   //  n (the result of either numberToNumber, stringToNumber, or otherToNumber)
+
+    numberToNumber: x => n,
 
     stringToNumber: x => {
       const stripped = x.replace(/[$%, ]/g, '');
-      return stripped === '' ? null : Number(stripped);
+      const n = stripped === '' ? null : Number(stripped);
+      // ^^^ avoids Number('') which is hilariously == 0
+      return n;
     },
 
-    isNumber: x => typeof(x) === 'number' && !Number.isNaN(x) && Number.isFinite(x),
+    otherToNumber: x => n,
 
-    numberConstraint: x => true,
+
+   // the functions below have access to:
+   //   x (the original passed in value)
+   //   n (the value that should be a number now)
+
+   // n is typically the first argument, and, in most cases, you can just
+   // ignore x when writing your own versions of these functions.
+   // for example, you might write:
+   //   numberConstraint: n => n > 999 && n < 9999
+   // instead of:
+   //   numberConstraint: (n, x) => n > 999 && n < 9999
+
+
+    beforeIsNumber: (n, x) => n,
+
+
+    isNumber: (n, x) =>
+      typeof(n) === 'number' && !Number.isNaN(n) && Number.isFinite(n),
+
+    numberConstraint: (n, x) => true,
+
+
+    onSuccess: (n, x) => n,
+
+    onFail: (x, n) => null, // WATCH OUT. x & n are swapped here
   };
 
 
-  const _ = {...defaults, ...customs};
+  const func = {...defaultFuncs, ...customFuncs};
 
-  if (Object.keys(_).length !== Object.keys(defaults).length) // catches typos
-    throw 'bad parameter.'
-
-  if (x === Object(x))
-    return _.onFail(x, x);
+  if (Object.keys(func).length !== Object.keys(defaultFuncs).length) // catch typos
+    throw 'bad parameter.';
 
 
-  const originalX = x;
+
+  let n;
   switch (typeof x) {
-  case 'string':
-    x = _.stringToNumber(x);
   case 'number':
-    if (_.isNumber(x) && _.numberConstraint(x))
-      break;
+    n = func.numberToNumber(x);
+  case 'string':
+    n = func.stringToNumber(x);
   default:
-    return _.onFail(originalX, x);
+    n = func.otherToNumber(x);
   }
 
-  return _.onSuccess(x, originalX);
+
+  n = func.beforeIsNumber(n);
+
+
+
+  if (func.isNumber(n) && func.numberConstraint(n))
+    return func.onSuccess(n, x);
+  return func.onFail(x, n);
 };
+
 
 module.exports = {toNumber};
